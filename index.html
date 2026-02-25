@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ressursfinner – Færder kommune</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --farder-blue: #3783C5;
+    --farder-blue-dark: #2060a0;
+    --farder-blue-light: #dceef8;
+    --farder-blue-mid: #4a9ad4;
+    --bg: #f5f7f8;
+    --surface: #ffffff;
+    --border: #dde3e8;
+    --green: #1b6b4a;
+    --purple: #5a3a8a;
+    --orange: #c0601a;
+    --text: #1c2833;
+    --text-mid: #4a5a65;
+    --text-soft: #8a9faa;
+    --danger: #b83a3a;
+    --radius: 3px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+  /* ── White top header matching Færder site ── */
+  .site-header {
+    width: 100%;
+    background: white;
+    border-bottom: 1px solid #dde3e8;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  }
+  .site-header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    height: 76px;
+    gap: 32px;
+  }
+  .kommune-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  /* Shield SVG logo */
+  .shield-logo { width: 40px; height: 48px; flex-shrink: 0; }
+  .kommune-logo-text { line-height: 1.1; }
+  .kommune-logo-name {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--farder-blue);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    display: block;
+  }
+  .kommune-logo-tagline {
+    font-size: 0.65rem;
+    color: #7a9aaa;
+    font-style: italic;
+    display: block;
+    margin-top: 1px;
+  }
+
+  /* Nav links */
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+  }
+  .site-nav a {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-mid);
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: color 0.15s, background 0.15s;
+  }
+  .site-nav a:hover { color: var(--farder-blue); background: var(--farder-blue-light); }
+  .nav-spacer { flex: 1; }
+  .nav-search-btn, .nav-menu-btn {
+    display: flex; align-items: center; gap: 7px;
+    background: var(--farder-blue); color: white;
+    border: none; border-radius: 3px; padding: 8px 16px;
+    font-family: inherit; font-size: 0.82rem; font-weight: 700;
+    cursor: pointer; white-space: nowrap;
+  }
+  .nav-search-btn { background: white; color: var(--farder-blue); border: 1.5px solid var(--farder-blue); margin-right: 6px; }
+  .nav-search-btn svg, .nav-menu-btn svg { width: 14px; height: 14px; }
+
+  /* ── Blue section bar below header ── */
+  .section-bar {
+    width: 100%;
+    background: var(--farder-blue);
+    padding: 0 24px;
+  }
+  .section-bar-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    gap: 8px;
+  }
+  .section-bar-crumb { color: rgba(255,255,255,0.75); font-size: 0.75rem; display: flex; align-items: center; gap: 6px; }
+  .section-bar-crumb a { color: rgba(255,255,255,0.85); text-decoration: none; }
+  .section-bar-crumb a:hover { color: white; text-decoration: underline; }
+  .section-bar-badge { margin-left: auto; background: rgba(255,255,255,0.15); color: white; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; border: 1px solid rgba(255,255,255,0.25); }
+
+  /* ── Page title area ── */
+  .page-title-bar {
+    width: 100%;
+    background: white;
+    border-bottom: 3px solid var(--farder-blue);
+    margin-bottom: 28px;
+  }
+  .page-title-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 24px 20px;
+  }
+  .page-title-inner h1 { font-size: 1.75rem; font-weight: 700; color: var(--text); margin-bottom: 7px; letter-spacing: -0.01em; }
+  .page-title-inner p { font-size: 0.9rem; color: var(--text-mid); line-height: 1.6; max-width: 640px; }
+
+  /* ── Main content ── */
+  .main { width: 100%; max-width: 1100px; padding: 0 24px 60px; display: flex; flex-direction: column; gap: 16px; }
+
+  /* ── Cards ── */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; }
+  .card-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--farder-blue); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+  /* ── Inputs ── */
+  .input-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .field { flex: 1; min-width: 160px; }
+  .field label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--text-mid); margin-bottom: 5px; }
+  .field input, .field select { width: 100%; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: var(--radius); font-family: inherit; font-size: 0.875rem; background: #f9fafb; color: var(--text); outline: none; transition: border-color 0.15s; }
+  .field input:focus, .field select:focus { border-color: var(--farder-blue-mid); background: #fff; box-shadow: 0 0 0 3px var(--farder-blue-light); }
+  textarea { width: 100%; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 11px 13px; font-family: inherit; font-size: 0.875rem; line-height: 1.6; background: #f9fafb; color: var(--text); resize: vertical; outline: none; transition: border-color 0.15s; min-height: 130px; }
+  textarea:focus { border-color: var(--farder-blue-mid); background: #fff; box-shadow: 0 0 0 3px var(--farder-blue-light); }
+  .textarea-hint { font-size: 0.72rem; color: var(--text-soft); margin-top: 5px; line-height: 1.5; }
+
+  /* ── Tags ── */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .tag { padding: 4px 11px; border-radius: 20px; font-size: 0.71rem; font-weight: 600; border: 1.5px solid; cursor: pointer; transition: all 0.15s; user-select: none; }
+  .tag.bio { border-color: var(--green); color: var(--green); }
+  .tag.bio.active { background: var(--green); color: white; }
+  .tag.psyko { border-color: var(--purple); color: var(--purple); }
+  .tag.psyko.active { background: var(--purple); color: white; }
+  .tag.sosial { border-color: var(--orange); color: var(--orange); }
+  .tag.sosial.active { background: var(--orange); color: white; }
+  .tag-hint { font-size: 0.68rem; color: var(--text-soft); margin-top: 6px; }
+
+  /* ── Run button ── */
+  .run-btn { width: 100%; padding: 14px; background: var(--farder-blue); color: white; border: none; border-radius: var(--radius); font-family: inherit; font-size: 0.95rem; font-weight: 700; cursor: pointer; letter-spacing: 0.02em; transition: background 0.15s; display: flex; align-items: center; justify-content: center; gap: 9px; }
+  .run-btn:hover { background: var(--farder-blue-dark); }
+  .run-btn:disabled { background: #aaa; cursor: not-allowed; }
+  .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Output ── */
+  #output { display: none; }
+  #output.visible { display: block; }
+  .output-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 10px; flex-wrap: wrap; }
+  .output-header h2 { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+  .copy-btn { font-size: 0.78rem; padding: 6px 14px; border: 1.5px solid var(--border); border-radius: var(--radius); background: white; color: var(--text-mid); cursor: pointer; transition: all 0.15s; font-family: inherit; font-weight: 600; }
+  .copy-btn:hover { border-color: var(--farder-blue); color: var(--farder-blue); }
+  .result-box { background: #f9fafb; border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; font-size: 0.9rem; line-height: 1.85; color: var(--text); white-space: pre-wrap; }
+  .section-heading { display: block; font-weight: 700; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; margin: 20px 0 9px; padding-bottom: 7px; border-bottom: 2px solid var(--border); }
+  .bio-tag { color: var(--green); border-color: var(--green); }
+  .psyko-tag { color: var(--purple); }
+  .sosial-tag { color: var(--orange); }
+  .error-box { background: #fff5f5; border: 1px solid #f5c6c6; border-radius: var(--radius); padding: 12px 14px; font-size: 0.82rem; color: var(--danger); line-height: 1.5; }
+
+  /* ── Info strip ── */
+  .info-strip { display: flex; gap: 10px; align-items: flex-start; background: var(--farder-blue-light); border-left: 4px solid var(--farder-blue); border-radius: var(--radius); padding: 13px 15px; font-size: 0.8rem; color: #1a3a55; line-height: 1.5; }
+  .info-strip svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; color: var(--farder-blue); }
+
+  /* ── API key card ── */
+  .api-key-card { background: #fffcf0; border: 1px solid #e0d080; border-left: 4px solid #c8b000; border-radius: var(--radius); padding: 16px 20px; }
+  .api-key-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+  .api-key-row .field { flex: 1; min-width: 240px; }
+  .api-key-row input { width: 100%; padding: 9px 12px; border: 1.5px solid #e0d080; border-radius: var(--radius); font-size: 0.82rem; background: #fff; color: var(--text); outline: none; font-family: monospace; }
+  .save-key-btn { padding: 9px 20px; background: var(--farder-blue); color: white; border: none; border-radius: var(--radius); font-family: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
+  .save-key-btn:hover { background: var(--farder-blue-dark); }
+  .key-hint { font-size: 0.71rem; color: #7a6800; margin-top: 7px; line-height: 1.5; }
+  .key-status { font-size: 0.72rem; margin-top: 5px; font-weight: 600; }
+
+  /* ── Print ── */
+  @media print {
+    .site-header, .section-bar, .page-title-bar, .api-key-card, .card:not(#output), .info-strip, .run-btn, .footer, .copy-btn { display: none !important; }
+    body { background: white; }
+    #output { display: block !important; border: none; padding: 0; }
+    .result-box { border: none; background: white; padding: 0; font-size: 10pt; line-height: 1.65; }
+    .print-header { display: flex !important; }
+  }
+  .print-header { display: none; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--farder-blue); padding-bottom: 10px; margin-bottom: 14px; }
+  .print-header-title { font-size: 14pt; font-weight: 700; color: var(--text); }
+  .print-header-sub { font-size: 9pt; color: #555; margin-top: 2px; }
+  .print-header-logo { font-size: 11pt; font-weight: 700; color: var(--farder-blue); text-align: right; text-transform: uppercase; letter-spacing: 0.04em; }
+  .print-header-logo span { display: block; font-size: 8pt; font-weight: 400; color: #888; font-style: italic; }
+
+  /* ── Footer ── */
+  .footer { width: 100%; background: #1a2e3a; padding: 22px 24px; margin-top: 24px; }
+  .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .footer p { color: rgba(255,255,255,0.55); font-size: 0.75rem; }
+  .footer a { color: rgba(255,255,255,0.75); text-decoration: none; }
+  .footer a:hover { color: white; }
+</style>
+</head>
+<body>
+
+<!-- White site header matching Færder kommune -->
+<div class="site-header">
+  <div class="site-header-inner">
+    <a class="kommune-logo" href="https://faerder.kommune.no" target="_blank">
+      <!-- Accurate Færder kommunevåpen: Azure shield, argent (white) jib sail -->
+      <svg class="shield-logo" viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Heraldic shield shape -->
+        <path d="M4 4 H196 V148 C196 196 100 236 100 236 C100 236 4 196 4 148 Z" fill="#3783C5"/>
+        <!-- Black outline -->
+        <path d="M4 4 H196 V148 C196 196 100 236 100 236 C100 236 4 196 4 148 Z" fill="none" stroke="#1a1a1a" stroke-width="5"/>
+        <!-- White jib sail (fokk) - triangular sail shape characteristic of Færder -->
+        <!-- Mast vertical line -->
+        <line x1="80" y1="30" x2="80" y2="200" stroke="white" stroke-width="7" stroke-linecap="round"/>
+        <!-- Boom horizontal line at bottom -->
+        <line x1="80" y1="200" x2="160" y2="170" stroke="white" stroke-width="7" stroke-linecap="round"/>
+        <!-- Sail body: triangle from top of mast to clew -->
+        <path d="M80 30 L160 170 L80 200 Z" fill="white" opacity="0.95"/>
+        <!-- Sail curve detail (leech curve) -->
+        <path d="M80 30 Q155 95 160 170" fill="none" stroke="white" stroke-width="2.5" opacity="0.3"/>
+      </svg>
+      <div class="kommune-logo-text">
+        <span class="kommune-logo-name">Færder Kommune</span>
+        <span class="kommune-logo-tagline">med vind i seilene</span>
+      </div>
+    </a>
+    <nav class="site-nav">
+      <div class="nav-spacer"></div>
+      <a href="https://faerder.kommune.no/tjenester/helse-og-omsorg/" target="_blank">Helse og omsorg</a>
+      <a href="https://faerder.kommune.no/tjenester/om-farder-kommune/organisasjonen/fardertrappa/" target="_blank">Færdertrappa</a>
+      <a href="https://faerder.kommune.no/tjenester/om-farder-kommune/kontakt-oss/" target="_blank">Kontakt</a>
+      <button class="nav-search-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Søk
+      </button>
+      <button class="nav-menu-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        Meny
+      </button>
+    </nav>
+  </div>
+</div>
+
+<!-- Blue section breadcrumb bar -->
+<div class="section-bar">
+  <div class="section-bar-inner">
+    <div class="section-bar-crumb">
+      <a href="https://faerder.kommune.no" target="_blank">Forsiden</a> ›
+      <a href="https://faerder.kommune.no/tjenester/helse-og-omsorg/" target="_blank">Helse og omsorg</a> ›
+      <a href="https://faerder.kommune.no/tjenester/om-farder-kommune/organisasjonen/fardertrappa/" target="_blank">Færdertrappa</a> ›
+      Ressursfinner
+    </div>
+    <span class="section-bar-badge">KI-verktøy</span>
+  </div>
+</div>
+
+<!-- Page title -->
+<div class="page-title-bar">
+  <div class="page-title-inner">
+    <h1>Ressursfinner – Fastlegeverktøy</h1>
+    <p>Skriv inn pasientens behov og historikk — KI-en matcher dette mot alle 12 trinn i Færdertrappa og lager et praktisk ressursark som kan gis direkte til pasienten.</p>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="api-key-card">
+    <div class="card-label" style="color:#7a6800; margin-bottom:10px">🔑 Anthropic API-nøkkel</div>
+    <div class="api-key-row">
+      <div class="field">
+        <label style="font-size:0.73rem;font-weight:500;color:var(--text-mid);display:block;margin-bottom:4px">Lim inn din Anthropic API-nøkkel</label>
+        <input type="password" id="apiKeyInput" placeholder="sk-ant-..." autocomplete="off" />
+      </div>
+      <button class="save-key-btn" onclick="saveKey()">Lagre nøkkel</button>
+    </div>
+    <div class="key-hint">
+      Hent nøkkel på <strong>console.anthropic.com</strong> → "API Keys" → "Create Key". Nøkkelen lagres kun i denne nettleseren.
+    </div>
+    <div class="key-status" id="keyStatus"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Pasientinformasjon</div>
+    <div class="input-row">
+      <div class="field">
+        <label>Alder</label>
+        <input type="text" id="age" placeholder="f.eks. 72" />
+      </div>
+      <div class="field">
+        <label>Kjønn</label>
+        <select id="gender">
+          <option value="">— ikke angitt —</option>
+          <option>Mann</option>
+          <option>Kvinne</option>
+          <option>Ikke-binær / annet</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Bosituasjon</label>
+        <select id="living">
+          <option value="">— ikke angitt —</option>
+          <option>Bor alene</option>
+          <option>Bor med partner</option>
+          <option>Bor med familie</option>
+          <option>Omsorgsbolig / tilrettelagt bolig</option>
+        </select>
+      </div>
+    </div>
+
+    <label class="card-label" style="margin-bottom:8px;display:block">Klinisk sammendrag og behov</label>
+    <textarea id="clinicalText" placeholder="Lim inn eller skriv pasienthistorikk her...
+
+Eksempler:
+• 78 år gammel kvinne med moderat demens, bor alene. Tiltagende glemsel, noe bekymring for hjemmesikkerheten. Datter strever som pårørende.
+• 45 år gammel mann, nylig jobbtap, depresjon, økt alkoholbruk, sosialt isolert etter skilsmisse.
+• 14 år gammel med angst og skolevegring. Foreldre bekymret, fastlegehenvisning avvist av BUP."></textarea>
+    <div class="textarea-hint">Fritekst fungerer fint — diagnoser, funksjonsproblemer, sosial bakgrunn, pårørendebelastning, boligutfordringer, alt som er relevant.</div>
+
+    <div class="card-label" style="margin-top:16px; margin-bottom:4px">Hurtigvalg behov (valgfritt)</div>
+    <div class="tag-row" id="tagRow"></div>
+    <div class="tag-hint">Trykk for å legge til. Disse legges til i sammendraget.</div>
+  </div>
+
+  <div class="info-strip">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <div>Ingen pasientdata lagres eller logges. Resultatet er et forslag — bruk alltid ditt eget kliniske skjønn. Verktøyet bruker all informasjon fra Færdertrappas 12 trinn (80+ tjenester).</div>
+  </div>
+
+  <button class="run-btn" id="runBtn" onclick="runAgent()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+    Generer ressursark for kommunale tjenester
+  </button>
+
+  <div class="card" id="output">
+    <div class="print-header">
+      <div>
+        <div class="print-header-title" id="printTitle">Ressursark fra Færder kommune</div>
+        <div class="print-header-sub">Utskrevet fra Fastlegeverktøy – Færdertrappa</div>
+      </div>
+      <div class="print-header-logo">Færder kommune<span>Helse og omsorg · 33 39 00 00</span></div>
+    </div>
+    <div class="output-header">
+      <h2 id="outputTitle">Ressursark</h2>
+      <div style="display:flex;gap:7px">
+        <button class="copy-btn" onclick="copyOutput()">📋 Kopier</button>
+        <button class="copy-btn" onclick="window.print()">🖨 Skriv ut</button>
+      </div>
+    </div>
+    <div id="resultContent" class="result-box"></div>
+    <div id="errorBox" style="display:none" class="error-box"></div>
+  </div>
+
+</div>
+
+<script>
+// ─── API Key management ───────────────────────────────────────────────────
+function saveKey() {
+  const key = document.getElementById('apiKeyInput').value.trim();
+  if (!key) { alert('Lim inn en API-nøkkel først.'); return; }
+  localStorage.setItem('anthropic_api_key', key);
+  document.getElementById('apiKeyInput').value = '●'.repeat(20);
+  document.getElementById('keyStatus').textContent = '✅ Nøkkel er lagret i nettleseren';
+  document.getElementById('keyStatus').style.color = '#1b6b4a';
+}
+
+function getKey() {
+  return localStorage.getItem('anthropic_api_key') || '';
+}
+
+// Show status on load
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = getKey();
+  if (saved) {
+    document.getElementById('keyStatus').textContent = '✅ Nøkkel er lagret i nettleseren';
+    document.getElementById('keyStatus').style.color = '#1b6b4a';
+    document.getElementById('apiKeyInput').placeholder = '●'.repeat(20) + ' (lagret)';
+  }
+});
+
+const quickTags = [
+  { label: 'Demens', cat: 'bio' },
+  { label: 'Kroniske smerter', cat: 'bio' },
+  { label: 'Fallrisiko', cat: 'bio' },
+  { label: 'Rehabilitering etter operasjon', cat: 'bio' },
+  { label: 'KOLS / luftveislidelse', cat: 'bio' },
+  { label: 'Diabetesoppfølging', cat: 'bio' },
+  { label: 'Slag / hjerte-kar', cat: 'bio' },
+  { label: 'Depresjon', cat: 'psyko' },
+  { label: 'Angst', cat: 'psyko' },
+  { label: 'Rusbruk', cat: 'psyko' },
+  { label: 'Selvskading / krise', cat: 'psyko' },
+  { label: 'Psykisk helse barn', cat: 'psyko' },
+  { label: 'Sorg / tap', cat: 'psyko' },
+  { label: 'Sosial isolasjon', cat: 'sosial' },
+  { label: 'Pårørendebelastning', cat: 'sosial' },
+  { label: 'Boligutfordringer', cat: 'sosial' },
+  { label: 'Økonomiske vansker', cat: 'sosial' },
+  { label: 'Flyktning / nyankommet', cat: 'sosial' },
+  { label: 'Arbeidsledighet', cat: 'sosial' },
+  { label: 'Vold i nære relasjoner', cat: 'sosial' },
+  { label: 'Enslig forsørger', cat: 'sosial' },
+];
+
+const activeTags = new Set();
+const tagRow = document.getElementById('tagRow');
+quickTags.forEach(t => {
+  const el = document.createElement('span');
+  el.className = `tag ${t.cat}`;
+  el.textContent = t.label;
+  el.onclick = () => {
+    if (activeTags.has(t.label)) { activeTags.delete(t.label); el.classList.remove('active'); }
+    else { activeTags.add(t.label); el.classList.add('active'); }
+  };
+  tagRow.appendChild(el);
+});
+
+async function runAgent() {
+  const apiKey = getKey();
+  if (!apiKey) { alert('Lim inn og lagre en Anthropic API-nøkkel først.'); return; }
+
+  const age     = document.getElementById('age').value.trim();
+  const gender  = document.getElementById('gender').value;
+  const living  = document.getElementById('living').value;
+  const clinical = document.getElementById('clinicalText').value.trim();
+  const tags    = [...activeTags];
+
+  if (!clinical && tags.length === 0) { alert('Skriv inn et klinisk sammendrag eller velg hurtigvalg.'); return; }
+
+  const btn       = document.getElementById('runBtn');
+  const output    = document.getElementById('output');
+  const resultBox = document.getElementById('resultContent');
+  const errorBox  = document.getElementById('errorBox');
+
+  btn.disabled = true;
+  btn.innerHTML = `<div class="spinner"></div> Analyserer pasient og finner tjenester…`;
+  output.classList.add('visible');
+  resultBox.innerHTML = '';
+  errorBox.style.display = 'none';
+
+  let patientInfo = '';
+  if (age)    patientInfo += `Alder: ${age}. `;
+  if (gender) patientInfo += `Kjønn: ${gender}. `;
+  if (living) patientInfo += `Bosituasjon: ${living}. `;
+  if (clinical) patientInfo += `\n\nKlinisk sammendrag:\n${clinical}`;
+  if (tags.length > 0) patientInfo += `\n\nYtterligere registrerte behov: ${tags.join(', ')}.`;
+
+  const RESOURCES = `
+=== FÆRDERTRAPPA – KONTAKTINFORMASJON OG TJENESTEBESKRIVELSER ===
+Format per tjeneste: NAVN | beskrivelse | tlf | nettside | google | hvem kontakter
+
+TRINN 1 – Tilbud for alle innbyggere (ingen søknad nødvendig)
+
+[Innbyggertorget]
+Beskrivelse: Kommunens informasjonsskranke – her kan du stille spørsmål om alle kommunale tjenester, få hjelp til å fylle ut søknader, og bli veiledet videre til riktig avdeling. Du trenger ikke bestille time. Tlf: 33 39 00 00 | Åpent man–fre 08–15. Nettside: https://faerder.kommune.no/tjenester/om-farder-kommune/kontakt-oss/ | Google: «Innbyggertorget Færder kommune». Hvem: pasienten eller pårørende tar kontakt selv.
+
+[Sjølystsenteret]
+Beskrivelse: Et hyggelig aktivitetssenter for deg som er 60 år eller eldre. Her kan du trene lett, delta i svømmekurs, gå turer, lage mat, ta del i hobbygrupper eller bare ta en kopp kaffe og prate med andre. Alt er tilrettelagt for eldre og foregår i et trygt og sosialt miljø. Mange opplever at de blir mer aktive og mindre ensomme etter at de begynte å bruke senteret. Tlf: 33 39 00 00 (sentralbord) | Nettside: https://faerder.kommune.no/tjenester/helse-og-omsorg/helsehus-rehabilitering-aktivitet-og-fritid/sjolystsenteret/ | Google: «Sjølystsenteret Færder kommune». Hvem: pasienten møter opp eller ringer selv.
+
+[Færder frivilligsentral]
+Beskrivelse: Frivilligheten i Færder tilbyr praktisk hjelp i hverdagen – gratis og uten krav om gjenytelse. Du kan få hjelp til å handle dagligvarer med handlebilen (tirsdager på Nøtterøy, onsdager på Tjøme), få besøk hjemme av en frivillig samtalevenn, få skyss til Bjønnesåsen bo- og aktivitetssenter, eller hjelp til enkle oppgaver hjemme som å skifte lyspærer eller hagearbeid. For deg over 65 år finnes det også rimeleg middag (kr 100) og sosiale kafeer på Teie og Tjøme. I tillegg tilbys datakurs og hjelp til å bruke mobiltelefon. Tlf: 90 68 71 03 (man–fre 09–15) | E-post: frivilligsentral@faerder.kommune.no | Adresse: Ekebergveien 10, Teie (Nøtterøy) og Rødsgata 36, Tjøme | Nettside: https://faerder.kommune.no/tjenester/kultur-idrett-friluftsliv-og-frivillighet/frivilligsentral/ | Google: «Færder frivilligsentral». Hvem: pasienten eller pårørende ringer selv.
+
+TRINN 2 – Helsefremmende og forebyggende tjenester
+
+[Færder friskliv og mestring]
+Beskrivelse: Et gratis eller rimelig kommunalt helsetilbud for deg som vil ta bedre vare på helsen din. Tilbyr individuell oppfølging gjennom en Frisklivsresept – et 16-ukers program med samtaler og aktivitet tilpasset ditt behov (egenandel kr 400). Du kan også delta på kurs: kosthold (Bra mat), søvn (Sov godt), røykeslutt (Tobakksfri), diabetes type 2, og mestring av stress og bekymringer (KiB-kurs, egenandel kr 600). For deg over 65 år finnes kurset «Takk, bare bra» – et kurs i kognitiv terapi som hjelper ved lett depresjon og nedstemthet (egenandel kr 500). Tilbudet ledes av fysioterapeuter med spesialkompetanse. Sted: Smidsrød helsehus, Øreveien 13, Nøtterøy. Tlf: 95 33 31 32 (Gro Thorbjørnsen) eller 91 87 68 23 (Tonje Krapf-Sterner) | E-post: friskliv@faerder.kommune.no | Nettside: https://faerder.kommune.no/tjenester/helse-og-omsorg/helsehus-rehabilitering-aktivitet-og-fritid/faerder-friskliv-og-mestring/ | Google: «Friskliv og mestring Færder». Hvem: fastlege kan skrive Frisklivsresept, men pasienten kan også ringe direkte uten henvisning.
+
+[Sterk og stødig]
+Beskrivelse: Et gratis treningsprogram spesielt utviklet for eldre som har begynt å kjenne seg ustøe, er redd for å falle, eller har falt tidligere. Du trener i en liten gruppe med andre i samme situasjon, veiledet av en fagperson. Øvelsene fokuserer på balanse og benstyrke og er tilpasset ditt nivå – du trenger ikke å være i form fra før. Mange opplever at de føler seg tryggere og mer stabile etter noen uker. Du må kunne gå innendørs uten hjelpemidler. Tilbys på 5 steder: Tjøme kommunehus (tirsdager 11–12), Sjølystsenteret (tirsdager 11:45–12:45), Villa Smidsrød/Øreveien 13 (torsdager 10–11, 11:15–12:15 og 12:30–13:30). Tlf: 41 54 69 04 (Vilde Kværne Stangeland) | E-post: vilde.kverne.stangeland@faerder.kommune.no | Nettside: https://faerder.kommune.no/tjenester/helse-og-omsorg/helsehus-rehabilitering-aktivitet-og-fritid/sterk-og-stodig/ | Google: «Sterk og stødig Færder». Hvem: fastlege anbefaler, pasienten melder seg på direkte.
+
+[Ergo- og fysioterapitjenesten (voksne og eldre)]
+Beskrivelse: En kommunal tjeneste som hjelper deg å fungere bedre i hverdagen etter sykdom, skade eller funksjonsnedsettelse. En ergoterapeut kan vurdere boligen din og anbefale tilpasninger (f.eks. støttegrep, rullator, heis) som gjør det tryggere å bo hjemme. En fysioterapeut kan komme hjem til deg for behandling og trening dersom du ikke kan reise til et institutt. Tjenesten hjelper deg også med å søke om hjelpemidler fra NAV. Tlf: 95 19 34 80 (Helseforvaltningen) | Nettside: https://faerder.kommune.no/tjenester/helse-og-omsorg/opptrening-og-rehabilitering/fysio-og-ergoterapi-for-voksne-og-eldre/ | Google: «Ergoterapi fysioterapi voksne Færder kommune». Hvem: fastlege søker via Helseforvaltningen.
+
+[Helsestasjon og skolehelsetjeneste]
+Beskrivelse: Helsetilbud for barn og unge 0–20 år – helsesjekker, vaksinasjoner, og samtaler om helse, trivsel og utvikling. Tlf: 40 80 12 30 (man–fre 08–11 og 13–15) | Adresse: Tinghaugveien 16, Nøtterøy | Nettside: https://faerder.kommune.no/tjenester/barnehage-skole-og-familie/helsetjenester-barn-og-unge/ | Google: «Helsestasjon Færder kommune». Hvem: foresatte eller ungdom tar kontakt selv.
+
+[Helsestasjon for ungdom (13–24 år)]
+Beskrivelse: Gratis og lavterskel helsetilbud for unge – ingen timeavtale nødvendig. Her kan unge snakke med helsesykepleier om psykisk helse, prevensjon, seksualitet, kropp, eller andre bekymringer. Tlf: 40 80 12 30 | Nettside: https://faerder.kommune.no/tjenester/barnehage-skole-og-familie/helsetjenester-barn-og-unge/helsestasjon-for-ungdom-13-24-ar-2/ | Google: «Helsestasjon for ungdom Færder». Hvem: ungdom møter opp uten henvisning.
+
+[Færderhuset – Familiesenter]
+Beskrivelse: Et lavterskeltilbud for familier med barn og unge som trenger ekstra støtte. Her jobber helsesykepleiere, psykologer, familieterapeuter og andre fagpersoner tett sammen, slik at familien kan få hjelp raskt og på ett sted – uten lange ventelister. Færderhuset hjelper ved bekymringer for barns utvikling, samspillsvansker, lettere psykiske plager hos barn og unge, og familier i vanskelige livssituasjoner. Tlf: 90 83 75 93 (man–fre 08–15:30) | Nettside: https://faerder.kommune.no/tjenester/barnehage-skole-og-familie/faerderhuset/ | Google: «Færderhuset Færder kommune». Hvem: fastlege, skole, barnehage eller familien selv tar kontakt.
+
+[Psykisk helseteam barn og unge (Færderhuset)]
+Beskrivelse: Et tverrfaglig team for barn og unge under 18 år med lettere til moderate psykiske vansker – for eksempel angst, depresjon, søvnvansker eller atferdsproblemer. Teamet tilbyr samtaler, veiledning til foreldre og samarbeid med skolen. Teamleder: Catrine Foynes tlf: 909 84 014 | Hovednummer FærderHuset: 90 83 75 93 | Nettside: https://faerder.kommune.no/tjenester/barnehage-skole-og-familie/stottetjenester/psykisk-helseteam-barn-og-unge/ | Google: «Psykisk helseteam barn unge Færder». Hvem: fastlege, skole eller foresatte tar kontakt.
+
+[Rusforebyggende ungdomsteam]
+Beskrivelse: Et gratis lavterskeltilbud for ungdom og deres foreldre som har spørsmål eller bekymringer knyttet til rusmidler. Du kan ringe anonymt og trenger ingen henvisning. Teamet tilbyr samtaler, råd og veiledning. Tlf: 90 16 07 65 | Nettside: https://faerder.kommune.no/tjenester/helse-og-omsorg/psykisk-helse-og-rus/rusforebyggende-ungdomsteam/ | Google: «Rusforebyggende ungdomsteam Færder». Hvem: ungdom, foreldre eller fagpersoner ringer direkte – ingen henvisning.
+
+[NAV Færder]
+Beskrivelse: NAV hjelper deg med økonomi, arbeidsavklaring og trygderettigheter. For eldre og syke er NAV særlig aktuelt for uføretrygd, arbeidsavklaringspenger (AAP), hjelpestønad, og grunnstønad. NAV kan også hjelpe pårørende som er hjemme og steller for et familiemedlem. Tlf: 55 55 33 33 | nav.no | Google: «NAV Færder». Hvem: pasienten tar kontakt selv; fastlege skriver erklæring ved behov.
+
+TRINN 3 – Målrettede og forebyggende tjenester (søknad eller koordinering nødvendig)
+
+[Kreftkoordinator Færder]
+Beskrivelse: Kommunens kreftkoordinator er et gratis tilbud for deg som har fått en kreftdiagnose og dine pårørende – gjennom hele sykdomsforløpet, fra diagnose til behandling og etterpå. Koordinatoren hjelper deg å forstå hvilke rettigheter og hjelpetilbud du har, koordinerer kontakt mellom sykehuset og kommunen, og kan komme hjem til deg for en samtale. Du trenger ingen henvisning fra lege. Tlf: 95 19 34 80 (Helseforvaltningen, man–fre 09–14) | Nettside: https://faerder.kommune.no/tjenester/helse-og-omsorg/hjemmetjenester/ergo-og-fysioterapeut-kreft-og-demenskoordinator/kreftkoordinator/ | Google: «Kreftkoordinator Færder kommune». Hvem: pasienten eller pårørende kan ringe Helseforvaltningen direkte; fastlege kan også henvise.
+
+[Demenskoordinator Færder]
+Beskrivelse: Demenskoordinatoren er et gratis tilbud for deg som er bekymret for hukommelsen din – enten det er deg selv eller noen i familien. Koordinatoren kan komme hjem til dere, svare på spørsmål om hva som skjer og hva dere kan forvente fremover, hjelpe til med å søke om tjenester, og sette dere i kontakt med andre som kan hjelpe. Mange pårørende opplever at det er en lettelse å ha en fast person å henvende seg til. Ingen trenger å møte opp på et kontor – koordinatoren kommer til deg. Direkte tlf: 48 26 94 99 (man–fre) | Nettside: https://faerder.kommune.no/tjenester/helse-og-omsorg/hjemmetjenester/ergo-og-fysioterapeut-kreft-og-demenskoordinator/demenskoordinator/ | Google: «Demenskoordinator Færder kommune». Hvem: pasienten, pårørende eller fastlege kan ringe direkte – ingen henvisning nødvendig.
+
+[Demenspoliklinikk (Bjønnesåsen)]
+Beskrivelse: En spesialisert utredningspoliklinikk for deg som trenger grundig undersøkelse for å avklare om du har en demenssykdom. Her gjennomføres hukommelsesprøver, samtaler og eventuelle videre undersøkelser. Dersom diagnosen stilles her, lages det en plan for videre oppfølging. Tlf: 95 19 34 80 (Helseforvaltningen) | Google: «Demenspoliklinikk Bjønnesåsen Færder». Hvem: fastlege skriver henvisning.
+
+[Pårørendeskole / Pårørendestøtte]
+Beskrivelse: Et gratis kurs over seks kvelder for deg som er pårørende til noen med demenssykdom. Du lærer om sykdommen, hvordan du kan kommunisere godt, hva du har krav på av hjelp, og du møter andre i samme situasjon. Kurset arrangeres hvert halvår. I tillegg finnes det samtalegruppetilbud for pårørende. Tlf: 95 19 34 80 (Helseforvaltningen) | Nettside: https://faerder.kommune.no/tjenester/helse-og-omsorg/demens/demens/ | Google: «Pårørendeskole demens Færder». Hvem: pårørende eller pasient kontakter Helseforvaltningen.
+
+[Koordinerende enhet / Individuell plan]
+Beskrivelse: Dersom du har mange ulike helsetjenester og synes det er vanskelig å holde oversikt, kan du søke om å få en personlig koordinator. Koordinatoren sørger for at alle som hjelper deg snakker sammen, og at du slipper å gjenta historien din til mange ulike personer. Du kan også få en individuell plan – et skriftlig dokument som beskriver dine mål og hvilke tjenester du skal motta. Tlf: 95 19 34 80 (Helseforvaltningen) | Nettside: https://faerder.kommune.no/tjenester/helse-og-omsorg/helseforvaltningen-tidligere-tjenestekontoret/koordinerende-enhet/ | Google: «Koordinerende enhet individuell plan Færder». Hvem: fastlege eller pasienten søker via Helseforvaltningen.
+
+[Psykisk helse og rus (voksne)]
+Beskrivelse: Kommunens psykiske helseteam tilbyr samtaler, støtte og oppfølging for voksne over 18 år som sliter med angst, depresjon, ensomhet, søvnproblemer, eller utfordringer knyttet til rus. Teamet har base i Tinghaugveien 17, Borgheim, men kan også komme hjem til deg. Tilbudet er gratis og ingen diagnose er nødvendig for å ta kontakt. Tlf: 95 19 34 80 (Helseforvaltningen) | Nettside: https://faerder.kommune.no/tjenester/helse-og-omsorg/psykisk-helse-og-rus/tjeneste-for-psykisk-helse-og-rus/ | Google: «Psykisk helse rus tjeneste Færder kommune». Hvem: pasienten kan kontakte Helseforvaltningen selv, eller fastlege kan søke.
+
+[Selvmordsforebygging – Mental Helse hjelpetelefon]
+Beskrivelse: Dersom du har tanker om å avslutte livet, eller er bekymret for noen du kjenner, kan du ringe Mental Helses hjelpetelefon – helt gratis og anonymt, hele døgnet. Tlf: 116 123 (hele døgnet, gratis). Google: «Mental Helse hjelpetelefon 116 123». Hvem: pasienten eller pårørende ringer direkte.
+
+[Krisesenteret i Vestfold]
+Beskrivelse: Krisesenteret er et gratis og anonymt tilbud for deg som opplever vold, trusler eller overgrep fra noen du kjenner – for eksempel en partner, et familiemedlem eller en nær venn. Du kan ringe og få råd, eller du kan komme og bo der midlertidig dersom du ikke er trygg hjemme. Tilbudet er åpent hele døgnet, alle dager. Du trenger ikke å ha anmeldt forholdet for å bruke senteret, og ingen behøver å vite at du har tatt kontakt. Tilbudet er for både kvinner og menn. Tlf: 33 31 11 00 (hele døgnet) | Google: «Krisesenteret Vestfold». Hvem: pasienten eller pårørende ringer direkte – ingen henvisning.
+
+[Boligveiledning / boligsosialt arbeid]
+Beskrivelse: Hjelp til å skaffe egnet bolig, tilpasse boligen slik at du kan bo trygt hjemme lenger, eller få råd om startlån og tilskudd dersom du vil kjøpe en mer egnet bolig. Tlf: 95 19 34 80 (Helseforvaltningen) | Google: «Boligveiledning Færder kommune». Hvem: fastlege støtter med dokumentasjon; pasienten søker via Helseforvaltningen.
+
+[Syn- og hørselskontakt / hjelpemidler sansevansker]
+Beskrivelse: Kommunen kan hjelpe deg med hjelpemidler dersom du har fått nedsatt syn eller hørsel. Dette kan være forstørrelsesglass, høreapparater, teleslynge, eller tilpasning av TV og telefon. Du kan også få veiledning om brannforebygging hjemme. Tlf: 95 19 34 80 (Helseforvaltningen) | Google: «Syn hørsel hjelpemidler Færder kommune». Hvem: fastlege eller pasienten tar kontakt med Helseforvaltningen.
+
+TRINN 4–6 – Boliger
+
+[Kommunale omsorgsboliger / boligklynger]
+Beskrivelse: Tilrettelagte kommunale boliger for deg som trenger en mer egnet plass å bo, men ikke har behov for sykehjem. Noen boliger ligger i klynger der naboene hjelper hverandre og det er sosiale fellesarealer. Andre boliger har tilgang til personale på anrop. Tlf: 95 19 34 80 (Helseforvaltningen) | Google: «Omsorgsbolig Færder kommune». Hvem: fastlege støtter søknaden; pasienten søker via Helseforvaltningen.
+
+TRINN 5 – Meningsfull hverdag
+
+[Dagaktivitetstilbud / Dagsentre]
+Beskrivelse: Et daglig tilbud utenfor hjemmet for deg som trenger struktur, sosialt samvær og aktiviteter – og for å gi pårørende noen timer pause i hverdagen. Du kan delta i matlaging, håndverk, sang, turer og samtaler. Noen dagsentre er spesialtilpasset personer med demens. Transport kan arrangeres. Tlf: 95 19 34 80 (Helseforvaltningen) | Google: «Dagaktivitetstilbud Færder kommune». Hvem: fastlege eller Helseforvaltningen søker for pasienten.
+
+TRINN 7 – Leve godt i eget hjem
+
+[Hverdagsrehabilitering]
+Beskrivelse: Et intensivt treningsprogram hjemme hos deg etter sykdom, fall eller sykehusopphold. Et team av fysioterapeut, ergoterapeut og hjemmetrener besøker deg daglig i en periode for å hjelpe deg å gjenvinne evnen til å klare deg selv – enten det er å gå på badet, lage mat, eller ta seg ut. Mange opplever at de klarer mye mer etter noen uker. Tlf: 95 19 34 80 (Helseforvaltningen, man–fre 09–14) | Google: «Hverdagsrehabilitering Færder kommune». Hvem: fastlege eller sykehus søker via Helseforvaltningen.
+
+[Hjemmehjelp / praktisk bistand]
+Beskrivelse: Praktisk hjelp i hjemmet til gjøremål du ikke lenger klarer selv – for eksempel rengjøring, klesvask og handling. Kommunen sender en hjemmehjelpere til deg etter en vurdering av behovet ditt. Egenandelen avhenger av inntekten din. Tlf: 95 19 34 80 (Helseforvaltningen) | Google: «Hjemmehjelp Færder kommune». Hvem: pasienten eller pårørende søker via Helseforvaltningen; fastlege støtter.
+
+[Matombringing]
+Beskrivelse: Kommunen leverer varm middag hjem til deg dersom det er vanskelig å lage mat selv. Dette er en enkel og trygg løsning for deg som bor alene eller har problemer med matlaging på grunn av sykdom. Tlf: 95 19 34 80 (Helseforvaltningen) | Google: «Matombringing Færder kommune». Hvem: pasienten eller pårørende søker via Helseforvaltningen.
+
+[Velferdsteknologi (trygghetsalarm, GPS, medisindispenser)]
+Beskrivelse: Tekniske hjelpemidler som gir deg og dine pårørende ekstra trygghet hjemme. En trygghetsalarm betyr at du kan tilkalle hjelp med ett knappetrykk om du faller eller blir dårlig. En GPS kan hjelpe pårørende med å finne deg dersom du går deg bort. En automatisk medisindispenser passer på at du tar riktig medisin til riktig tid. Kommunen vurderer behovet og hjelper med søknaden. Tlf: 95 19 34 80 (Helseforvaltningen) | Google: «Trygghetsalarm velferdsteknologi Færder kommune». Hvem: fastlege eller pårørende tar initiativ; søkes via Helseforvaltningen.
+
+[Brukerstyrt personlig assistanse (BPA)]
+Beskrivelse: Dersom du er under 67 år og har et stort og varig behov for praktisk hjelp, kan du søke om BPA – en ordning der du selv bestemmer hvem som skal hjelpe deg og når. Assistenten hjelper deg med alt fra personlig stell til å delta i fritidsaktiviteter. Tlf: 95 19 34 80 (Helseforvaltningen) | Google: «BPA brukerstyrt personlig assistanse Færder». Hvem: fastlege støtter søknaden; søkes via Helseforvaltningen.
+
+TRINN 8 – Helsehjelp til hjemmeboende
+
+[Hjemmesykepleie]
+Beskrivelse: Sykepleiere fra kommunen kommer hjem til deg for å hjelpe med helserelaterte oppgaver du ikke klarer selv – for eksempel stell av sår, hjelp til personlig hygiene, medisinadministrasjon (inkludert injeksjoner), og helseovervåkning. Hjemmesykepleien er tilgjengelig alle dager, også helger. Tlf for nye søknader: 95 19 34 80 (Helseforvaltningen) | Tlf for eksisterende brukere: 900 16 919 (resepsjon, man–fre 07:30–15:00) | Nettside: https://faerder.kommune.no/tjenester/helse-og-omsorg/hjemmetjenester/hjemmetjenester-ambulerende/ | Google: «Hjemmesykepleie Færder kommune». Hvem: fastlege eller sykehus søker via Helseforvaltningen.
+
+[Palliasjon hjemme (lindrende behandling)]
+Beskrivelse: For deg som er alvorlig syk og ønsker å tilbringe mest mulig tid hjemme, kan kommunen tilby lindrende behandling og pleie i ditt eget hjem. Sykepleiere og leger samarbeider om å lindre smerte og andre symptomer, og sørge for at du og familien har det godt i en vanskelig tid. Fastlegen er en sentral del av dette teamet. Tlf: 95 19 34 80 (Helseforvaltningen) | Google: «Palliasjon hjemme Færder kommune». Hvem: fastlege koordinerer via Helseforvaltningen.
+
+TRINN 9 – Tidsbegrenset opphold
+
+[Korttidsopphold sykehjem]
+Beskrivelse: Et midlertidig opphold på sykehjem eller rehabiliteringsenhet der du kan komme deg etter sykehusopphold, operasjon, fall eller sykdom. Du bor på institusjonen i noen uker mens du trener opp styrke og funksjon før du reiser hjem igjen. Tlf: 95 19 34 80 (Helseforvaltningen) | Google: «Korttidsopphold sykehjem Færder». Hvem: sykehuset eller fastlege søker via Helseforvaltningen.
+
+[Avlastningsopphold]
+Beskrivelse: Et midlertidig opphold for deg som bor hjemme og blir pleiet av familie – slik at din pårørende kan få en pause og hente krefter. Oppholdet kan vare noen dager til noen uker. Tlf: 95 19 34 80 (Helseforvaltningen) | Google: «Avlastningsopphold Færder kommune». Hvem: fastlege støtter søknaden; søkes via Helseforvaltningen.
+
+TRINN 10–12 – Institusjon og spesialiserte plasser
+
+[Langtidsopphold sykehjem (Bjønnesåsen bo- og aktivitetssenter)]
+Beskrivelse: Et fast opphold på sykehjem for deg som ikke lenger kan bo trygt hjemme, selv med mye hjelp. På sykehjemmet får du heldøgns pleie og omsorg, medisiner, mat, sosialt fellesskap og aktivitetstilbud. Bjønnesåsen bo- og aktivitetssenter er kommunens sykehjem. Tlf: 95 19 34 80 (Helseforvaltningen) | Google: «Langtidsopphold sykehjem Færder» eller «Bjønnesåsen Færder». Hvem: fastlege bidrar med helseopplysninger; søkes via Helseforvaltningen.
+
+[Skjermet enhet for demens]
+Beskrivelse: En spesialavdeling på sykehjemmet for personer med alvorlig demens som trenger ekstra trygghet, tilsyn og spesialtilpasset omsorg. Her jobber personale med særlig kompetanse på demens. Tlf: 95 19 34 80 (Helseforvaltningen) | Google: «Skjermet enhet demens Færder». Hvem: søkes via Helseforvaltningen.
+
+[Palliativ enhet (Smidsrød helsehus)]
+Beskrivelse: En spesialisert avdeling for lindrende behandling ved livets slutt, for deg som er alvorlig syk og trenger mer hjelp enn det som kan gis hjemme. Personalet har spesialkompetanse på smertelindring og omsorg ved livets slutt. Tlf: 95 19 34 80 (Helseforvaltningen) | Google: «Palliativ enhet Smidsrød helsehus Færder». Hvem: fastlege koordinerer via Helseforvaltningen.
+
+FELLES KONTAKTINFO:
+- Helseforvaltningen Færder (søknader om alle kommunale helse- og omsorgstjenester): Tlf: 95 19 34 80 | Telefontid man–fre 09–14 | postmottak@faerder.kommune.no | https://faerder.kommune.no/tjenester/helse-og-omsorg/helseforvaltningen-tidligere-tjenestekontoret/
+- Sentralbord Færder kommune (generell henvendelse – ikke direktelinje til enkelt-tjenester): Tlf: 33 39 00 00 | man–fre 09–15
+- NAV Færder: Tlf: 55 55 33 33 | nav.no
+- Mental Helse hjelpetelefon (selvmordsforebygging): Tlf: 116 123 (gratis, hele døgnet)
+- Krisesenteret i Vestfold (vold i nære relasjoner): Tlf: 33 31 11 00 (hele døgnet, gratis og anonymt) | Google: «Krisesenteret Vestfold»
+`;
+
+  const systemPrompt = `Du er et støtteverktøy for fastleger i Færder kommune. Din oppgave er å lage et praktisk ressursark som KAN SKRIVES UT OG GIES DIREKTE TIL PASIENTEN.
+
+RESSURSDATABASE:
+${RESOURCES}
+
+INSTRUKSJONER:
+- Velg 4–10 av de MEST RELEVANTE tjenestene for denne pasienten. Ikke list opp alt.
+- Skriv som om du snakker direkte til en eldre person – enkelt, varmt, tålmodig. Unngå fagord. Forklar hva tjenesten faktisk innebærer i praksis, ikke bare hva den heter.
+- Start med en kort, vennlig innledning adressert til PASIENTEN (2–3 setninger, varm tone) – gjerne noe som normaliserer det å søke hjelp.
+- Organiser svaret i opptil 3 seksjoner med disse EKSAKTE overskriftene (ta bare med seksjoner som er relevante):
+  [BIOLOGISK / HELSETJENESTER]
+  [PSYKOLOGISK / PSYKISK HELSE]
+  [SOSIALT / PRAKTISK STØTTE]
+
+For HVER tjeneste du nevner, inkluder ALLTID alle disse punktene:
+  • Tjenestenavn (fet)
+  • Hva tjenesten gjør – 2–4 setninger i enkelt hverdagsspråk rettet mot eldre pasienten. Forklar konkret hva som faktisk skjer (hvem som kommer, hva de hjelper med, hva det koster om noe).
+  • Hvem som tar kontakt – enten: "📞 Du eller dine pårørende kan ringe selv:" eller "📋 Fastlegen ordner dette for deg:"
+  • Telefonnummer
+  • Nettside som klikkbar lenke: f.eks. Les mer: [faerder.kommune.no/...](URL)
+  • Google-tips: 🔍 Søk på: «[søketerm]» (hvis pasienten vil finne siden selv)
+  • Eventuell åpningstid eller praktisk info (kort)
+
+Legg deretter til seksjonen [FASTLEGENS HANDLINGSPUNKTER] – marker denne tydelig som intern (kun for legen):
+  - Konkrete neste steg legen skal gjøre
+  - Hvilke henvisninger som sendes og til hvem
+  - Foreslått oppfølgingstidspunkt
+
+Avslutt med seksjonen [VED SPØRSMÅL]:
+  Helseforvaltningen: 95 19 34 80 (man–fre 09–14) | Sentralbord: 33 39 00 00 | postmottak@faerder.kommune.no
+
+VIKTIG:
+- Skriv i enkelt, forståelig norsk – ingen fagsjargong.
+- Telefonnumre og lenker skal ALLTID stå med.
+- Finn IKKE opp kontaktinfo som ikke finnes i databasen.
+- Når du oppgir sentralbordnummeret 33 39 00 00, skal du ALLTID presisere at dette er kommunens generelle sentralbord – ikke en direktelinje til tjenesten. Skriv det slik: «📞 Sentralbord (generell henvendelse, ikke direktelinje): 33 39 00 00»
+- Tone i pasientdelen: varm, støttende, tålmodig – som om du snakker med en bestemor eller bestefar.
+- Tone i legedelen: kortfattet og klinisk.
+- IKKE ta med akutt-tjenester som legevakt, med unntak av selvmordsforebygging (Mental Helse 116 123) og Krisesenteret i Vestfold (33 31 11 00) dersom det er relevant for pasienten.`;
+
+  const fullPrompt = `Generer et kommunalt ressursark for følgende pasient:\n\n${patientInfo}`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 2000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: fullPrompt }]
+      })
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error?.message || `API-feil ${response.status}`);
+
+    const text = data.content?.[0]?.text || '';
+
+    const rendered = text
+      .replace(/\[BIOLOGISK \/ HELSETJENESTER\]/g, '<span class="section-heading bio-tag">🟢 BIOLOGISK / HELSETJENESTER</span>')
+      .replace(/\[PSYKOLOGISK \/ PSYKISK HELSE\]/g, '<span class="section-heading psyko-tag">🟣 PSYKOLOGISK / PSYKISK HELSE</span>')
+      .replace(/\[SOSIALT \/ PRAKTISK STØTTE\]/g, '<span class="section-heading sosial-tag">🟠 SOSIALT / PRAKTISK STØTTE</span>')
+      .replace(/\[FASTLEGENS HANDLINGSPUNKTER\]/g, '<span class="section-heading" style="color:#7a4800;background:#fff8ee;padding:4px 10px;border-radius:3px;border-bottom:2px solid #e0a000">📋 FASTLEGENS HANDLINGSPUNKTER – intern</span>')
+      .replace(/\[VED SPØRSMÅL\]/g, '<span class="section-heading" style="color:#1a6496">📞 VED SPØRSMÅL</span>');
+
+    resultBox.innerHTML = rendered;
+
+    // Update print header title
+    let titleStr = 'Ressursark fra Færder kommune';
+    if (age || gender) titleStr += ` — ${[age ? age + ' år' : '', gender].filter(Boolean).join(', ')}`;
+    document.getElementById('printTitle').textContent = titleStr;
+
+  } catch (err) {
+    errorBox.style.display = 'block';
+    errorBox.textContent = `Feil: ${err.message}. Sjekk at API-nøkkelen er riktig og prøv igjen.`;
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg> Generer ressursark for kommunale tjenester`;
+  output.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function copyOutput() {
+  const text = document.getElementById('resultContent').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ Kopiert!';
+    setTimeout(() => btn.textContent = '📋 Kopier', 2000);
+  });
+}
+
+document.addEventListener('keydown', e => { if (e.ctrlKey && e.key === 'Enter') runAgent(); });
+</script>
+
+</div><!-- /main -->
+
+<div class="footer">
+  <div class="footer-inner">
+    <p>© Færder kommune · <a href="https://faerder.kommune.no/tjenester/om-farder-kommune/kontakt-oss/">Kontakt oss</a> · Tlf: 33 39 00 00 · <a href="/cdn-cgi/l/email-protection#f2829d81869f9d86869399b294939780969780dc999d9f9f879c97dc9c9d"><span class="__cf_email__" data-cfemail="9dedf2eee9f0f2e9e9fcf6ddfbfcf8eff9f8efb3f6f2f0f0e8f3f8b3f3f2">[email&#160;protected]</span></a></p>
+    <p><a href="https://faerd
